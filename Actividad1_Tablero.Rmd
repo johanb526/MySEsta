@@ -1,0 +1,246 @@
+---
+title: "Resultados Carrera de la Luz"
+output: 
+  flexdashboard::flex_dashboard:
+    theme:
+      bg: "#f7f7f7"
+      fg: "#201df0" 
+      primary: "#ED79F9"
+      base_font:
+        google: Prompt
+      code_font:
+        google: JetBrains Mono
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+# Install thematic and un-comment for themed static plots (i.e., ggplot2)
+# thematic::thematic_rmd()
+```
+
+column {data-height=350 .tabset }
+-----------------------------------------------------------------------
+
+### Resultados globales
+
+```{r}
+library(paqueteMET) 
+data("CarreraLuz22")
+par(cex.axis=0.7)
+boxplot(formula = CarreraLuz22$timerun/60 ~ CarreraLuz22$categoria,main="Diagrama de cajas Carrera de la Luz por categorias",
+        xlab="Categoría",ylab = "Tiempo(mins)",
+        col=rainbow(5))
+
+
+
+```
+
+
+
+
+### Categoría juvenil
+
+```{r}
+library(paqueteMET) 
+data("CarreraLuz22")
+datasetj=subset(CarreraLuz22,CarreraLuz22$categoria == "1. Juvenil" | CarreraLuz22$categoria == "5. Veteranos C")
+par(cex.axis=0.7)
+hist(CarreraLuz22$timerun/60,ylab="Frecuencia",xlab="Tiempo(mins)",main = "Histograma y diagrama de cajas categoria Juvenil y \n Veteranos c", ylim=c(0,600), col="lightcyan" )
+hist(datasetj$timerun/60,add=TRUE, col= rgb(0.6, 0.2,0.8) )
+grid(nx = NA, ny = NULL, lty = 2, col = "gray", lwd = 1)
+par(new = TRUE)
+boxplot(datasetj$timerun/60, horizontal = TRUE,axes=FALSE, 
+        lwd = 0.8, col = rgb(0.6, 0.2,0.8, alpha = 0.2))
+legend("topright",
+c("General","Categoria Juvenil y Veteranos C"),
+fill = c("lightcyan",col=rgb(0.6, 0.2,0.8))
+)
+
+
+
+```
+
+### Categoría Abierta
+
+```{r}
+
+library(paqueteMET) 
+data("CarreraLuz22")
+dataseta=subset(CarreraLuz22,CarreraLuz22$categoria == "2. Abierta")
+par(cex.axis=0.7)
+hist(CarreraLuz22$timerun/60,ylab="Frecuencia",xlab="Tiempo(mins)",main = "Histograma y diagrama de cajas categoria Abierta", ylim=c(0,600), col="lightcyan" )
+hist(dataseta$timerun/60,add=TRUE, col= rgb(0.75, 1, 0.24) )
+grid(nx = NA, ny = NULL, lty = 2, col = "gray", lwd = 1)
+par(new = TRUE)
+boxplot(dataseta$timerun/60, horizontal = TRUE, axes = FALSE,
+        lwd = 0.8, col = rgb(0.75, 1, 0.24, alpha = 0.2))
+legend("topright",
+c("General","Categoria Abierta"),
+fill = c("lightcyan",col=rgb(0.75, 1, 0.24))
+)
+
+
+```
+
+### Categoría Veteranos A
+
+```{r}
+library(paqueteMET) 
+data("CarreraLuz22")
+datasetva=subset(CarreraLuz22,CarreraLuz22$categoria == "3. Veteranos A")
+par(cex.axis=0.7)
+hist(CarreraLuz22$timerun/60,ylab="Frecuencia",xlab="Tiempo(mins)",main = "Histograma y diagrama de cajas categoria Veteranos A", ylim=c(0,600), col="lightcyan" )
+hist(datasetva$timerun/60,add=TRUE, col= "green" )
+grid(nx = NA, ny = NULL, lty = 2, col = "gray", lwd = 1)
+par(new = TRUE)
+boxplot(datasetva$timerun/60, horizontal = TRUE, axes = FALSE,
+        lwd = 0.8, col = rgb(0, 1, 0, alpha = 0.2))
+legend("topright",
+c("General","Categoria Veteranos A"),
+fill = c("lightcyan","Green")
+)
+
+```
+
+
+### Categoría Veteranos B
+
+```{r}
+library(paqueteMET) 
+data("CarreraLuz22")
+datasetvb=subset(CarreraLuz22,CarreraLuz22$categoria == "4. Veteranos B")
+par(cex.axis=0.7)
+hist(CarreraLuz22$timerun/60,ylab="Frecuencia",xlab="Tiempo(mins)",main = "Histograma y diagrama de cajas categoria Veteranos B", ylim=c(0,600), col="lightcyan" )
+hist(datasetvb$timerun/60,add=TRUE, col = rgb(0.28, 0.46, 1) )
+grid(nx = NA, ny = NULL, lty = 2, col = "gray", lwd = 1)
+par(new = TRUE)
+boxplot(datasetvb$timerun/60, horizontal = TRUE, axes = FALSE,
+        lwd = 0.8, col = rgb(0.28, 0.46, 1, alpha = 0.2))
+legend("topright",
+c("General","Categoria Veteranos B"),
+fill = c("lightcyan",col = rgb(0.28, 0.46, 1))
+)
+
+```
+
+Column {data-width=350 }
+-----------------------------------------------------------------------
+
+### Diagrama de barras participantes Carrera de la Luz por categorias
+
+```{r}
+library(paqueteMET) 
+data("CarreraLuz22")
+table1=table(CarreraLuz22$sex,CarreraLuz22$categoria)
+par(cex.axis=0.7)
+barplot(table1, col=c("blue","yellow"), ylim=c(0,1200),ylab = "Número de inscritos")
+legend("topright",
+c("Hombres","Mujeres"),
+fill = c("blue","yellow")
+)
+```
+
+### Histograma de distribución de frecuencias de los tiempos de todos los participantes y por sexos
+
+```{r}
+library(paqueteMET) 
+data("CarreraLuz22")
+dataseth=subset(CarreraLuz22,CarreraLuz22$sex=="Hombre")
+datasetm=subset(CarreraLuz22,CarreraLuz22$sex=="Mujer")
+par(cex.axis=0.7)
+hist(CarreraLuz22$timerun/60,ylab="Frecuencia",xlab="Tiempo(mins)",main = "", ylim=c(0,600), col="lightcyan" )
+hist(dataseth$timerun/60,add=TRUE, col= "blue" )
+hist(datasetm$timerun/60,add=TRUE, col= "yellow" )
+grid(nx = NA, ny = NULL, lty = 2, col = "gray", lwd = 1)
+legend("topright",
+c("General","Hombres","Mujeres"),
+fill = c("lightcyan","blue","yellow")
+)
+
+
+```
+
+
+Column {data-width=150 }
+-----------------------------------------------------------------------
+
+### ValueBox
+
+
+```{r}
+library(paqueteMET) 
+data("CarreraLuz22")
+valueBox(value = cat(round( mean(CarreraLuz22$timerun/60),2), "min"),caption = "Tiempo promedio",icon = "icon" , color = 'green')
+
+```
+
+### ValueBox
+
+
+```{r}
+library(paqueteMET) 
+data("CarreraLuz22")
+valueBox(value = cat(round( min(CarreraLuz22$timerun/60),2), "min"),caption = "Tiempo ganador",icon = "icon" , color = 'green')
+
+```
+
+### ValueBox
+
+
+```{r}
+library(paqueteMET) 
+data("CarreraLuz22")
+dataseth=subset(CarreraLuz22,CarreraLuz22$sex=="Hombre")
+datasetm=subset(CarreraLuz22,CarreraLuz22$sex=="Mujer")
+valueBox(value = cat(round( min(dataseth$timerun/60),2), "min"),caption = "Mejor tiempo hombres",icon = "icon" , color = 'blue')
+
+```
+
+### ValueBox
+
+
+```{r}
+library(paqueteMET) 
+data("CarreraLuz22")
+dataseth=subset(CarreraLuz22,CarreraLuz22$sex=="Hombre")
+datasetm=subset(CarreraLuz22,CarreraLuz22$sex=="Mujer")
+valueBox(value = cat(round( min(datasetm$timerun/60),2), "min"),caption = "Mejor tiempo mujeres",icon = "icon" , color = 'yellow')
+
+```
+### ValueBox
+
+
+```{r}
+library(paqueteMET) 
+data("CarreraLuz22")
+
+valueBox(value = nrow(CarreraLuz22),caption = "Total participantes",icon = "icon" , color = 'green')
+
+```
+### ValueBox
+
+
+```{r}
+library(paqueteMET) 
+data("CarreraLuz22")
+dataseth=subset(CarreraLuz22,CarreraLuz22$sex=="Hombre")
+datasetm=subset(CarreraLuz22,CarreraLuz22$sex=="Mujer")
+
+valueBox(value = cat(round(nrow(dataseth)/nrow(CarreraLuz22),2)*100,"%"),caption = "Total participantes mujeres",icon = "icon" , color = 'blue')
+
+```
+
+### ValueBox
+
+
+```{r}
+library(paqueteMET) 
+data("CarreraLuz22")
+dataseth=subset(CarreraLuz22,CarreraLuz22$sex=="Hombre")
+datasetm=subset(CarreraLuz22,CarreraLuz22$sex=="Mujer")
+
+valueBox(value = cat(round(nrow(datasetm)/nrow(CarreraLuz22),2)*100,"%"),caption = "Total participantes mujeres",icon = "icon" , color = 'yellow')
+
+```
